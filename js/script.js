@@ -49,4 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Automatic Carousel Logic
+  const track = document.getElementById('carousel-track');
+  if (track) {
+    const slides = Array.from(track.children);
+    let currentIndex = 0;
+
+    const moveSlide = () => {
+      const visibleSlides = window.innerWidth <= 768 ? 1 : 3;
+      currentIndex++;
+      if (currentIndex > slides.length - visibleSlides) {
+        currentIndex = 0;
+      }
+      const amountToMove = slides[currentIndex].offsetWidth * currentIndex;
+      track.style.transform = `translateX(-${amountToMove}px)`;
+    };
+
+    // Slide every 3 seconds
+    setInterval(moveSlide, 3000);
+
+    // Handle window resize to keep alignment
+    window.addEventListener('resize', () => {
+      const amountToMove = slides[currentIndex].offsetWidth * currentIndex;
+      track.style.transform = `translateX(-${amountToMove}px)`;
+    });
+  }
 });
